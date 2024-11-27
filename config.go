@@ -7,6 +7,7 @@ type Config struct {
 	Title      string
 	Author     string
 	AuthorLink string
+	Theme      string
 }
 
 var DefaultConfig Config = Config{
@@ -16,4 +17,5 @@ var DefaultConfig Config = Config{
 	Title:      "dingadmin",
 	Author:     "dinglz",
 	AuthorLink: "https://github.com/dingdinglz",
+	Theme:      "./web/admin/",
 }
