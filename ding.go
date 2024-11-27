@@ -11,8 +11,10 @@ import (
 )
 
 type App struct {
-	Server *fiber.App
-	config Config
+	Server         *fiber.App
+	config         Config
+	dingMenus      []Menu
+	dingMenuGroups []MenuGroup
 }
 
 func New(configs ...Config) *App {
@@ -23,6 +25,7 @@ func New(configs ...Config) *App {
 		app.config = DefaultConfig
 	}
 	engine := html.New(app.config.Theme, ".html")
+	engine.ShouldReload = true
 	app.Server = fiber.New(fiber.Config{Views: engine})
 	return app
 }
@@ -41,6 +44,7 @@ func NewWithFiberConfig(serverConfig fiber.Config, configs ...Config) *App {
 }
 
 func (app *App) Serve() error {
+	bindRouters(app)
 	app.Server.Use(logger.New(), recover.New())
 	return app.Server.Listen(tool.StringBuilder("0.0.0.0:", strconv.Itoa(app.config.Port)))
 }
