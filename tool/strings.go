@@ -9,3 +9,12 @@ func StringBuilder(s ...string) string {
 	}
 	return i.String()
 }
+
+func SringInSlice(s string, ss []string) bool {
+	for _, cnt := range ss {
+		if cnt == s {
+			return true
+		}
+	}
+	return false
+}

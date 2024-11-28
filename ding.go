@@ -8,6 +8,7 @@ import (
 	"github.com/gofiber/fiber/v2/middleware/logger"
 	"github.com/gofiber/fiber/v2/middleware/recover"
 	"github.com/gofiber/template/html/v2"
+	"gorm.io/gorm"
 )
 
 type App struct {
@@ -15,6 +16,7 @@ type App struct {
 	config         Config
 	dingMenus      []Menu
 	dingMenuGroups []MenuGroup
+	Database       *gorm.DB
 }
 
 func New(configs ...Config) *App {
@@ -25,9 +27,11 @@ func New(configs ...Config) *App {
 		app.config = DefaultConfig
 	}
 	defaultConfigCheck(&app.config)
+	app.connectDatabase()
 	engine := html.New(app.config.Theme, ".html")
 	engine.ShouldReload = true
 	app.Server = fiber.New(fiber.Config{Views: engine})
+	app.linkParts()
 	return app
 }
 
@@ -39,9 +43,11 @@ func NewWithFiberConfig(serverConfig fiber.Config, configs ...Config) *App {
 		app.config = DefaultConfig
 	}
 	defaultConfigCheck(&app.config)
+	app.connectDatabase()
 	engine := html.New(app.config.Theme, ".html")
 	serverConfig.Views = engine
 	app.Server = fiber.New(serverConfig)
+	app.linkParts()
 	return app
 }
 
@@ -66,6 +72,15 @@ func defaultConfigCheck(cfg *Config) {
 	}
 	if cfg.Theme == "" {
 		cfg.Theme = "./web/admin/"
+	}
+	if cfg.DBtype == "" {
+		cfg.DBtype = "sqlite"
+	}
+	if cfg.DBsource == "" {
+		cfg.DBsource = "data.db"
+	}
+	if cfg.MinLevel == 0 {
+		cfg.MinLevel = 1
 	}
 }
 
