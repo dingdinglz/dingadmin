@@ -24,6 +24,7 @@ func New(configs ...Config) *App {
 	} else {
 		app.config = DefaultConfig
 	}
+	defaultConfigCheck(&app.config)
 	engine := html.New(app.config.Theme, ".html")
 	engine.ShouldReload = true
 	app.Server = fiber.New(fiber.Config{Views: engine})
@@ -37,10 +38,35 @@ func NewWithFiberConfig(serverConfig fiber.Config, configs ...Config) *App {
 	} else {
 		app.config = DefaultConfig
 	}
+	defaultConfigCheck(&app.config)
 	engine := html.New(app.config.Theme, ".html")
 	serverConfig.Views = engine
 	app.Server = fiber.New(serverConfig)
 	return app
+}
+
+func defaultConfigCheck(cfg *Config) {
+	if cfg.Port == 0 {
+		cfg.Port = 8080
+	}
+	if cfg.Prefix == "" {
+		cfg.Prefix = "/admin"
+	}
+	if cfg.Name == "" {
+		cfg.Name = "dingadmin"
+	}
+	if cfg.Title == "" {
+		cfg.Title = "dingadmin"
+	}
+	if cfg.Author == "" {
+		cfg.Author = "dinglz"
+	}
+	if cfg.AuthorLink == "" {
+		cfg.AuthorLink = "https://github.com/dingdinglz"
+	}
+	if cfg.Theme == "" {
+		cfg.Theme = "./web/admin/"
+	}
 }
 
 func (app *App) Serve() error {
