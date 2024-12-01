@@ -17,6 +17,7 @@ type Config struct {
 	DBsource    string   // DBsource 约定了数据库的连接方法，sqlite下可能为data.db，mysql下可能为user:pass@tcp(127.0.0.1:3306)/dbname?charset=utf8mb4&parseTime=True&loc=Local
 	DisablePart []string // DisablePart 约定了dingadmin不加载的组件列表，比如user组件
 	MinLevel    int      // MinLevel 约定了能够访问admin界面的用户的最小等级
+	TokenTime   int      // TokenTime 约定了token能保存的时间长度，单位为分钟
 }
 
 var DefaultConfig Config = Config{
@@ -30,6 +31,7 @@ var DefaultConfig Config = Config{
 	DBtype:     "sqlite",
 	DBsource:   "data.db",
 	MinLevel:   1,
+	TokenTime:  60,
 }
 
 // SaveConfig 保存Config

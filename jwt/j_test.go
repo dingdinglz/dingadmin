@@ -15,7 +15,7 @@ func TestJWT(t *testing.T) {
 		Name string `json:"name"`
 		jwt.RegisteredClaims
 	}
-	to, e := jwt.ParseWithClaims("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoibmFtZVRlc3QiLCJleHAiOjE3MzI4NjcwMTB9.qIRRAz9e17_uw0WStOxfUqtjpz8FVKfJlh5xQxA5U8c", &MyC{}, func(t *jwt.Token) (interface{}, error) {
+	to, e := jwt.ParseWithClaims("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwidXNlcm5hbWUiOiJhZG1pbiIsImxldmVsIjo1LCJleHAiOjE3MzMwMjY3MzR9.sTbKozBTTSTrnnd5Z2wMyxoEqNLZo4vFPyA2wgSK-_0", &MyC{}, func(t *jwt.Token) (interface{}, error) {
 		return []byte("password"), nil
 	})
 	if e != nil {
@@ -45,5 +45,5 @@ func TestMake(t *testing.T) {
 
 func TestMakeUserToken(t *testing.T) {
 	fmt.Println(MakeUserToken(1, "dinglz", 5, time.Minute*2, "test"))
-	fmt.Println(ParseUserToken("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwidXNlcm5hbWUiOiJkaW5nbHoiLCJsZXZlbCI6NSwiZXhwIjoxNzMyODcyNzQ1fQ.5KlTMRZtpp_uizfyUT6k_wGift7HhB-VD9Pq4wOIC8s", "test"))
+	fmt.Println(ParseUserToken("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwidXNlcm5hbWUiOiJhZG1pbiIsImxldmVsIjo1LCJleHAiOjE3MzMwMjY3MzR9.sTbKozBTTSTrnnd5Z2wMyxoEqNLZo4vFPyA2wgSK-_0", "test"))
 }

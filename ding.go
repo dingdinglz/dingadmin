@@ -17,6 +17,7 @@ type App struct {
 	dingMenus      []Menu
 	dingMenuGroups []MenuGroup
 	Database       *gorm.DB
+	tokenKey       string
 }
 
 func New(configs ...Config) *App {
@@ -32,6 +33,7 @@ func New(configs ...Config) *App {
 	engine.ShouldReload = true
 	app.Server = fiber.New(fiber.Config{Views: engine})
 	app.linkParts()
+	app.tokenKey = tool.GenerateRandomString(20)
 	return app
 }
 
@@ -48,6 +50,7 @@ func NewWithFiberConfig(serverConfig fiber.Config, configs ...Config) *App {
 	serverConfig.Views = engine
 	app.Server = fiber.New(serverConfig)
 	app.linkParts()
+	app.tokenKey = tool.GenerateRandomString(20)
 	return app
 }
 
@@ -81,6 +84,9 @@ func defaultConfigCheck(cfg *Config) {
 	}
 	if cfg.MinLevel == 0 {
 		cfg.MinLevel = 1
+	}
+	if cfg.TokenTime == 0 {
+		cfg.TokenTime = 60
 	}
 }
 
