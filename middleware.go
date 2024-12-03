@@ -14,11 +14,12 @@ func checkPath(p string, path string) string {
 }
 
 func (app *App) AuthMiddleWare() fiber.Handler {
+	disableUser := tool.SringInSlice("user", app.config.DisablePart)
+	returnUrl := checkPath(app.config.Prefix, "/login")
 	return func(c *fiber.Ctx) error {
-		if tool.SringInSlice("user", app.config.DisablePart) {
+		if disableUser {
 			return c.Next()
 		}
-		returnUrl := checkPath(app.config.Prefix, "/login")
 		if c.Cookies("token", "") == "" {
 			return c.Redirect(returnUrl)
 		}
